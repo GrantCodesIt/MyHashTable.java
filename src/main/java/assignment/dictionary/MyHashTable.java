@@ -23,6 +23,19 @@ public class MyHashTable<K,V>
 //        extends Dictionary<K,V>
  //       implements Map<K,V>, Cloneable, java.io.Serializable
 {
+    public class HashNode <K,V> {
+        K key;
+        V value;
+        MyHashTable<K, V>.HashNode<K, V> next;
+        int hashCode;
+        int index;
+        public HashNode(K key, V value, int hashCode,int index) {
+            this.key = key;
+            this.value = value;
+            this.hashCode = hashCode;
+            this.index = index;
+        }
+    }
      ArrayList<HashNode<K, V>> map;
     public MyHashTable() {
          map = new ArrayList<>();
@@ -85,28 +98,25 @@ public class MyHashTable<K,V>
     while(value.hasNext()) {
     }
          */
-        //Iterator<K> set = (Iterator<K>) map.iterator();
-        Iterator<K> keySet = getKeyIterator();
-        return keySet;
+        ArrayList<K> test = new ArrayList<>();
+        for(HashNode<K,V> node: map) {
+            while(node != null) {
+                test.add(node.key);
+            }
+        }
+
+        return test.iterator();
     }
     public Iterator<V> values() {
     //Iterator<V> values = (Iterator<K>) map.iterator();
-        Iterator<V> values = getValueIterator();
-        return values;
-
-    }
-    public class HashNode <K,V> {
-        K key;
-        V value;
-        MyHashTable<K, V>.HashNode<K, V> next;
-        int hashCode;
-        int index;
-        public HashNode(K key, V value, int hashCode,int index) {
-            this.key = key;
-            this.value = value;
-            this.hashCode = hashCode;
-            this.index = index;
+        ArrayList<V> test = new ArrayList<>();
+        for(HashNode<K,V> node: map) {
+            while(node != null) {
+                test.add(node.value);
+            }
         }
+        return test.iterator();
+
     }
     int mapSize = 0;
     public V add(K key, V value)
@@ -141,8 +151,6 @@ public class MyHashTable<K,V>
         */
         return null;
     }
-
-
     public V remove(K key) {
 
         HashNode<K,V> head = map.get(getIndex(key));
@@ -172,7 +180,6 @@ public class MyHashTable<K,V>
         //Return removed value
         return head.value;
     }
-
     public V getValue(K key) {
         HashNode<K,V> head = map.get(getIndex(key));
         while(head != null) {
@@ -184,7 +191,6 @@ public class MyHashTable<K,V>
         //Does not Exist
         return null;
     }
-
     public boolean contains(Object key) {
         if (map.iterator() == key) {
             return true;
@@ -192,28 +198,6 @@ public class MyHashTable<K,V>
         else
             return false;
     }
-    public Iterator<K> getKeyIterator() {
-        Iterator it = map.iterator();
-
-        while(it.hasNext()) {
-            Object next = it.next();
-            it.equals(next);
-        }
-        return it;
-    }
-    public Iterator<V> getValueIterator() {
-        Iterator it = map.iterator();
-        Iterator key = map.iterator();
-        while(it.hasNext()) {
-            Object next = it.next();
-            if (map.contains(next)) {
-                key.equals(next);
-            }
-            it.equals(next);
-        }
-        return key;
-    }
-
     public boolean isEmpty() {
         Iterator it = map.iterator();
         while (it.hasNext()) {

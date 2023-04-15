@@ -139,24 +139,20 @@ public class MisSpellActionThread implements Runnable {
         // ADD CODE HERE
 //>>>>>>>>>>> ADDED CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        Object obj = new Object();
-        //obj.equals(word,theDictionary.getValue());
+       if(theDictionary.contains(word) ) {
+           return true;
+       }
+       else {
+           for(int i=0; i <word.length();i++){
+               if(!Character.isLetter(word.charAt(i))) {
+                   return true;
+               }
+               else
+                   return false;
+           }
+       }
 
-        Iterator<String> str = myDictionary.getKeyIterator();
-                //str = theDictionary.getValueIterator();
-        while(str.hasNext() == true) {
-            String test = str.toString();
-            if(test == "!"|| test == "." || test == "/" || test == "?" || test == ",") {
-                return true;
-            }
-            if (theDictionary.contains(test) == true) {
-                return true;
-            }
-        }
-       // if (theDictionary.contains(word)) {
-        //}
-        // NO: getKeyIterator, getValueIterator
-        // if theDictionary.contains();
+
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
         return result;
