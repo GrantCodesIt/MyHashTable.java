@@ -30,7 +30,7 @@ public class MyHashTable<K,V>
     public V put(K key, V value) {
         //than get node
         //add values to node?
-        HashNode<K,V> head = map.get(getIndex(key,value));
+        HashNode<K,V> head = map.get(getIndex(key));
         while(head != null) {
             if(head.key.equals(key)) {
                 add(key,value);
@@ -83,7 +83,6 @@ public class MyHashTable<K,V>
         }
         Iterator value = set.iterator();
     while(value.hasNext()) {
-
     }
          */
         //Iterator<K> set = (Iterator<K>) map.iterator();
@@ -219,8 +218,13 @@ public class MyHashTable<K,V>
         Iterator it = map.iterator();
         while (it.hasNext()) {
             Object obj = it.next();
-            return obj == null;
+            if(obj == null) {
+                return true;
+            }
+            else
+                return false;
         }
+        return false;
     }
     public int getSize() {
         return mapSize;
