@@ -146,6 +146,9 @@ public class MisSpellActionThread implements Runnable {
                 //str = theDictionary.getValueIterator();
         while(str.hasNext() == true) {
             String test = str.toString();
+            if(test == "!"|| test == "." || test == "/" || test == "?" || test == ",") {
+                return true;
+            }
             if (theDictionary.contains(test) == true) {
                 return true;
             }

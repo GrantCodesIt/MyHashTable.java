@@ -85,20 +85,17 @@ public class MyHashTable<K,V>
     while(value.hasNext()) {
 
     }
-
          */
-        Iterator<K> set = (Iterator<K>) map.iterator();
-        return set;
+        //Iterator<K> set = (Iterator<K>) map.iterator();
+        Iterator<K> keySet = getKeyIterator();
+        return keySet;
     }
-
-    public Iterator<K> values() {
-    Iterator<K> values = (Iterator<K>) map.iterator();
-
+    public Iterator<V> values() {
+    //Iterator<V> values = (Iterator<K>) map.iterator();
+        Iterator<V> values = getValueIterator();
         return values;
 
     }
-
-
     public class HashNode <K,V> {
         K key;
         V value;
@@ -113,7 +110,6 @@ public class MyHashTable<K,V>
         }
     }
     int mapSize = 0;
-    //ArrayList<HashNode<K, V>> map = new ArrayList<>();
     public V add(K key, V value)
     {
         int hashcode = key.hashCode();
