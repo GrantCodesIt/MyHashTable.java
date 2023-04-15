@@ -28,11 +28,9 @@ public class MyHashTable<K,V>
          map = new ArrayList<>();
     }
     public V put(K key, V value) {
-        int hashcode = key.hashCode();
-        int index = (hashcode & 0x7FFFFFFF) % map.size();
         //than get node
         //add values to node?
-        HashNode<K,V> head = map.get(index);
+        HashNode<K,V> head = map.get(getIndex(key,value));
         while(head != null) {
             if(head.key.equals(key)) {
                 add(key,value);
@@ -65,7 +63,14 @@ public class MyHashTable<K,V>
     public int size() {
         return mapSize;
     }
-
+    public int getIndex(K key) {
+        int hashcode = key.hashCode();
+        if(hashcode < 0) {
+            hashcode = hashcode * -1;
+        }
+        int index = (hashcode & 0x7FFFFFFF) % map.size();
+        return index;
+    }
     public Iterator<K> keySet() {
         /*
         Iterator<K> set = null;
@@ -82,13 +87,15 @@ public class MyHashTable<K,V>
     }
 
          */
-        Iterator<K> set = null;
+        Iterator<K> set = (Iterator<K>) map.iterator();
         return set;
     }
 
     public Iterator<K> values() {
-    Iterator<K> values = null;
+    Iterator<K> values = (Iterator<K>) map.iterator();
+
         return values;
+
     }
 
 
@@ -110,11 +117,7 @@ public class MyHashTable<K,V>
     public V add(K key, V value)
     {
         int hashcode = key.hashCode();
-        if(hashcode < 0) {
-            hashcode = hashcode * -1;
-        }
-        int index = (hashcode & 0x7FFFFFFF) % map.size();
-        HashNode<K,V> head = new HashNode<>(key,value,hashcode,index);
+        HashNode<K,V> head = new HashNode<>(key,value,hashcode,getIndex(key));
         // Check for Duplicates
         while ( head != null) {
             if(head.key.equals(key)) {
@@ -123,8 +126,8 @@ public class MyHashTable<K,V>
             head = head.next;
         }
         // Add Key and Value to chain
-        HashNode<K,V> newNode = new HashNode<K,V>(key,value,hashcode,index);
-        map.add(index,newNode);
+        HashNode<K,V> newNode = new HashNode<K,V>(key,value,hashcode,getIndex(key));
+        map.add(getIndex(key),newNode);
         newNode.next = head;
         mapSize++;
 
@@ -147,9 +150,7 @@ public class MyHashTable<K,V>
 
     public V remove(K key) {
 
-        int hashcode = key.hashCode();
-        int index =  (hashcode & 0x7FFFFFFF) % map.size();
-        HashNode<K,V> head = map.get(index);
+        HashNode<K,V> head = map.get(getIndex(key));
         HashNode<K,V> prev = null;
         // Find Node in HashMap
         while(head !=null) {
@@ -166,7 +167,7 @@ public class MyHashTable<K,V>
         }
         // First index is the node
         if(prev == null) {
-            map.set(index, head.next);
+            map.set(getIndex(key), head.next);
         }
         // Set A to C and skips B.
         else {
@@ -178,10 +179,7 @@ public class MyHashTable<K,V>
     }
 
     public V getValue(K key) {
-        int hashcode = key.hashCode();
-        int index =  (hashcode & 0x7FFFFFFF) % map.size();
-        HashNode<K,V> head = map.get(index);
-
+        HashNode<K,V> head = map.get(getIndex(key));
         while(head != null) {
             if(head.key.equals(key)) {
                 return head.value;
@@ -198,9 +196,6 @@ public class MyHashTable<K,V>
         }
         else
             return false;
-    }
-    public void iterator(){
-
     }
     public Iterator<K> getKeyIterator() {
         Iterator it = map.iterator();
@@ -226,12 +221,9 @@ public class MyHashTable<K,V>
 
     public boolean isEmpty() {
         Iterator it = map.iterator();
-        while (it.hasNext() == true) {
+        while (it.hasNext()) {
             Object obj = it.next();
-            if (obj == null) {
-                return true;
-            } else
-                return false;
+            return obj == null;
         }
     }
     public int getSize() {
